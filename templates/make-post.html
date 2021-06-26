@@ -1,0 +1,62 @@
+{% extends 'bootstrap/base.html' %}
+
+<!-- Add import for bootstrap wtf quickform support-->
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block content %}
+{% include "header.html" %}
+  <!-- Page Header -->
+  <header class="masthead" style="background-image: url('{{ url_for('static', filename='img/edit-bg.jpg')}}')">
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="page-heading">
+
+<!--  We are rendering this page from edit_post and create_post-->
+<!--  Depending from which function we are rendering this page we want the tag h1 shows different text -->
+<!--  For this we are using if statement and a value, which is passed from edit_post function: -->
+<!--  If the value from edit_post is True: -->
+            {% if is_edit: %}
+            <h1>Edit Post</h1>
+            {% else: %}
+            <h1>New Post</h1>
+            {% endif %}
+            <span class="subheading">You're going to make a great blog post!</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+
+
+<!--  DOCS: https://flask-ckeditor.readthedocs.io/en/latest/basic.html-->
+<!--  Load ckeditor-->
+        {{ ckeditor.load() }}
+
+<!--  Configure the ckeditor to tell it which field in WTForm (in class CreatePostForm(FlaskForm):)
+ will need to be a CKEditor.-->
+        {{ ckeditor.config(name='body') }}
+
+<!--  Add WTF quickform-->
+<!--  To make our submit field be of another color we add an parameter: button-map. -->
+<!--  Note: If you want the Submit Post button to be blue instead of white, simply add a
+button_map parameter to the wtf quickform and make the submit field a Bootstrap "primary" button.
+-->
+<!--  Bootstrap Buttons: https://getbootstrap.com/docs/4.0/components/buttons/ -->
+
+          {{ wtf.quick_form(form, novalidate=True, button_map={"submit": "primary"}) }}
+
+
+</form>
+
+      </div>
+    </div>
+  </div>
+
+{% include "footer.html" %}
+{% endblock %}
